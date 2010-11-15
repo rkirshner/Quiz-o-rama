@@ -8,7 +8,6 @@ public class Achievements {
 	public static final int PRODIGIOUS_AUTHOR = 2;
 	public static final int QUIZ_MACHINE = 3;
 	public static final int I_AM_THE_GREATEST = 4;
-	public static final int PRACTICE_MAKES_PERFECT = 5;
 	
 	/**
 	 * Adds 1 to the progress of the achievement

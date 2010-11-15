@@ -10,7 +10,7 @@ public class User {
 	private History history;
 	
 	/**
-	 * Password given in plain text, saved hased.
+	 * Password given in plain text, saved hashed.
 	 * @param name
 	 * @param password
 	 * @param admin

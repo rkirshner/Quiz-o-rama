@@ -2,7 +2,7 @@ package social;
 
 public class UserFactory {
 
-	
+	DBConnection c = new DBConnection();
 	public UserFactory(){
 		
 	}
@@ -14,8 +14,11 @@ public class UserFactory {
 	 * @return
 	 */
 	public User getUser(String username, String password){
-		return null;
-		
+		return c.getUser(username, password);
+	}
+	
+	public boolean addUser(String username, String password, boolean admin){
+		return c.addUser(username, password, admin);
 	}
 	
 }
