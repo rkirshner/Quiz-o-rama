@@ -38,7 +38,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			ResultSet rs = stmt.executeQuery("SELECT r FROM Mail WHERE recieved_user_id LIKE \"" + user +"\" AND r = 1;");
+			ResultSet rs = stmt.executeQuery("SELECT r FROM social_mail WHERE recieved_user_id LIKE \"" + user +"\" AND r = 1;");
 			while(rs.next()){
 				ret++;
 			}
@@ -59,13 +59,13 @@ public class DBConnection {
 			ResultSet rs = null;
 			switch (modifier){
 			case BOTH:
-				rs = stmt.executeQuery("SELECT * FROM Mail WHERE sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");
 				break;
 			case SENT:
-				rs = stmt.executeQuery("SELECT * FROM Mail WHERE sent_user_id LIKE \"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");
 				break;
 			case RECIEVED:
-				rs = stmt.executeQuery("SELECT * FROM Mail WHERE recieved_user_id LIKE \"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");	
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE recieved_user_id LIKE \"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");	
 				break;
 			}
 			while (rs.next()){
@@ -89,7 +89,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			stmt.executeUpdate("UPDATE Achievements SET quizzes_taken = \"" + (prev + 1) + "\" WHERE user_id = \"" + user + "\";");
+			stmt.executeUpdate("UPDATE social_achievements SET quizzes_taken = \"" + (prev + 1) + "\" WHERE user_id = \"" + user + "\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -100,7 +100,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			stmt.executeUpdate("UPDATE Achievements SET quizzes_made = \"" + (prev + 1) + "\" WHERE user_id = \"" + user + "\";");
+			stmt.executeUpdate("UPDATE social_achievements SET quizzes_made = \"" + (prev + 1) + "\" WHERE user_id = \"" + user + "\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -111,7 +111,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			stmt.executeUpdate("UPDATE Achievements SET high_score_reached = \"1\" WHERE user_id = \"" + user + "\";");
+			stmt.executeUpdate("UPDATE social_achievements SET high_score_reached = \"1\" WHERE user_id = \"" + user + "\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -122,7 +122,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Achievements WHERE user_id LIKE \"" + user.getName()+ "\";");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM social_achievements WHERE user_id LIKE \"" + user.getName()+ "\";");
 			if(rs.first()){
 				return new Achievements(rs.getString("user_id"), rs.getInt("quizzes_made"), rs.getInt("quizzes_taken"), rs.getBoolean("high_score_reached"));
 			}	
@@ -138,7 +138,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Users WHERE user_id LIKE \"" + username+ "\" AND password LIKE \"" + password + "\" ;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE user_id LIKE \"" + username+ "\" AND password LIKE \"" + password + "\" ;");
 
 			if(rs.first()){
 				System.out.println(rs.getString("user_id"));
@@ -159,7 +159,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Users WHERE user_id LIKE \"" + username+ "\";");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE user_id LIKE \"" + username+ "\";");
 			if (rs.first()) throw new SQLException();
 			int adminint = 0;
 			if(admin) adminint = 1;
@@ -177,7 +177,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Friendships WHERE user_a LIKE \"" + user +"\" OR user_b LIKE\"" + user +"\";");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM social_friendships WHERE user_a LIKE \"" + user +"\" OR user_b LIKE\"" + user +"\";");
 			while (rs.next()){
 				if (rs.getString("user_a").equals(user)){
 					ret.add(rs.getString("user_b"));
@@ -197,7 +197,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			ResultSet rs = stmt.executeQuery("SELECT * FROM User_History WHERE user_id LIKE \"" + user +"\" ORDER BY time DESC;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM social_history WHERE user_id LIKE \"" + user +"\" ORDER BY time DESC;");
 			while (rs.next()){
 				History next = new History(rs.getString("quiz_link"), rs.getInt("score"), rs.getLong("time"));
 				ret.add(next);
@@ -213,7 +213,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			stmt.executeUpdate("INSERT INTO User_History VALUES (\"" + user.getName() + "\",\"" + System.currentTimeMillis() + "\",\"" + url + "\",\"" + score + "\")");
+			stmt.executeUpdate("INSERT INTO social_history VALUES (\"" + user.getName() + "\",\"" + System.currentTimeMillis() + "\",\"" + url + "\",\"" + score + "\")");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
