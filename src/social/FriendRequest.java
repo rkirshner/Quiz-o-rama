@@ -15,7 +15,7 @@ public class FriendRequest extends Message{
 	 * @param answer
 	 */
 	public void accept(boolean answer){
-		
+		read = true;
 	}
 	/**
 	 * Declines a friends request. Only usable by the recipient. Removes FriendRequest from database.

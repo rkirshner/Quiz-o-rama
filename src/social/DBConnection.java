@@ -80,9 +80,68 @@ public class DBConnection {
 		return ret;	
 	}
 	
+	protected static List<Note> getNotes(String user, int modifier){
+		initializeConnection();
+		List<Note> ret = new ArrayList<Note>();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			ResultSet rs = null;
+			switch (modifier){
+			case BOTH:
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");
+				break;
+			case SENT:
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");
+				break;
+			case RECIEVED:
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE recieved_user_id LIKE \"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");	
+				break;
+			}
+			while (rs.next()){
+				Note next = new Note(rs.getString("sent_user_id"), rs.getString("recieved_user_id"), rs.getLong("timestamp"));
+				next.setRead(rs.getBoolean("r"));
+				next.setSubject(rs.getString("subject"));
+				next.setMessage(rs.getString("note_message"));
+				ret.add(next);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ret;	
+	}
 	
-	
-	
+	protected static List<Challenge> getChallenges(String user, int modifier){
+		initializeConnection();
+		List<Challenge> ret = new ArrayList<Challenge>();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			ResultSet rs = null;
+			switch (modifier){
+			case BOTH:
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");
+				break;
+			case SENT:
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");
+				break;
+			case RECIEVED:
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE recieved_user_id LIKE \"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");	
+				break;
+			}
+			while (rs.next()){
+				Challenge next = new Challenge(rs.getString("sent_user_id"), rs.getString("recieved_user_id"), rs.getLong("timestamp"));
+				next.setRead(rs.getBoolean("r"));
+				next.setSubject(rs.getString("subject"));
+				next.setLink(rs.getString("challenge_link"));
+				next.setHighScore(rs.getInt("challenge_high_score"));
+				ret.add(next);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ret;	
+	}
 	
 	protected static void addTakenQuiz(String user, int prev){
 		initializeConnection();

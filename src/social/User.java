@@ -1,13 +1,16 @@
 package social;
 
 import java.util.List;
-
+/**
+ * Nearly static class. Contains very little information, everything is pulled from the database for up to date information.
+ * @author rexkirshner
+ *
+ */
 public class User {
 
 	private String name;
 	private String password;
 	private boolean admin;
-	private History history;
 	
 	/**
 	 * Password given in plain text, saved hashed.

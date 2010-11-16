@@ -8,6 +8,7 @@ public class Message {
 	private String message;
 	private String subject;
 	private long timeStamp;
+	protected boolean read;
 	
 	/**
 	 * Allocates a new message, setting the subject to null.
@@ -62,14 +63,14 @@ public class Message {
 	 * @return
 	 */
 	public boolean read(){
-		return false;
+		return read;
 	}
 	/**
 	 * Sets if the message has been read.
 	 * @param read
 	 */
 	public void setRead(boolean read){
-		
+		this.read = read;
 	}
 	
 	

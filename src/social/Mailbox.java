@@ -1,10 +1,14 @@
 package social;
 
 import java.util.List;
-
+/**
+ * Nearly static class. Contains no information other than the name of the owner. Every method accesses the database for current information.
+ * 
+ *
+ */
 public class Mailbox {
 	String user;
-	
+
 	public Mailbox(String user){
 		this.user = user;
 	}
@@ -21,7 +25,7 @@ public class Mailbox {
 	 * @return
 	 */
 	public List<Note> getSentNotes(){
-		return null;
+		return DBConnection.getNotes(user, DBConnection.SENT);
 		
 	}
 	/**
@@ -29,7 +33,7 @@ public class Mailbox {
 	 * @return
 	 */
 	public List<Note> getRecievedNotes(){
-		return null;
+		return DBConnection.getNotes(user, DBConnection.RECIEVED);
 		
 	}
 	/**
@@ -37,7 +41,7 @@ public class Mailbox {
 	 * @return
 	 */
 	public List<Note> getAllNotes(){
-		return null;
+		return DBConnection.getNotes(user, DBConnection.ALL);
 		
 	}
 	/**
@@ -45,7 +49,7 @@ public class Mailbox {
 	 * @return
 	 */
 	public List<Challenge> getSentChallenges(){
-		return null;
+		return DBConnection.getChallenges(user, DBConnection.SENT);
 		
 	}
 	/**
@@ -53,7 +57,7 @@ public class Mailbox {
 	 * @return
 	 */
 	public List<Challenge> getRecievedChallenge(){
-		return null;
+		return DBConnection.getChallenges(user, DBConnection.RECIEVED);
 		
 	}
 	/**
@@ -61,7 +65,7 @@ public class Mailbox {
 	 * @return
 	 */
 	public List<Challenge> getAllChallenge(){
-		return null;
+		return DBConnection.getChallenges(user, DBConnection.ALL);
 		
 	}
 	/**
@@ -85,5 +89,16 @@ public class Mailbox {
 	 */
 	public List<FriendRequest> getAllFriendRequests(){
 		return DBConnection.getFriendRequests(user, DBConnection.BOTH);
+	}
+	
+	
+	/**
+	 * Sends a message.
+	 * @param m
+	 */
+	public void sendMessage(Message m){
+		if(m.getClass().equals(FriendRequest.class)) System.out.println("fr");
+		if(m.getClass().equals(Note.class)) System.out.println("n");
+		if(m.getClass().equals(Challenge.class)) System.out.println("c");
 	}
 }
