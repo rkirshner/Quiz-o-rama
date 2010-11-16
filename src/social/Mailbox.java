@@ -4,6 +4,10 @@ import com.sun.tools.javac.util.List;
 
 public class Mailbox {
 
+	
+	public Mailbox(String user){
+		
+	}
 	/**
 	 * Returns the number unread.
 	 * @return

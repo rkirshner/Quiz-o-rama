@@ -19,4 +19,7 @@
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/UserServlet</url-pattern>
   </servlet-mapping>
+  <listener>
+    <listener-class>social.SocialDBListener</listener-class>
+  </listener>
 </web-app>

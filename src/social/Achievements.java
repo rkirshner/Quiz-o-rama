@@ -1,67 +1,104 @@
 package social;
 
+import java.util.List;
+
 public class Achievements {
 
-	
+	int made;
+	int taken;
+	boolean highscore;
+	String user;
+
+	public Achievements(String user, int made, int taken, boolean highscore){
+		this.made = made;
+		this.taken = taken;
+		this.highscore = highscore;
+		this.user = user;
+	}
+
+	public static final int TOTAL_ACHIEVMENTS = 5;
 	public static final int AMATEUR_AUTHOR = 0;
 	public static final int PROLIFIC_AUTHOR = 1;
 	public static final int PRODIGIOUS_AUTHOR = 2;
 	public static final int QUIZ_MACHINE = 3;
 	public static final int I_AM_THE_GREATEST = 4;
-	
+
 	/**
-	 * Adds 1 to the progress of the achievement
-	 * @param type
+	 * Adds 1 to the amount of quizzes created.
 	 */
-	public void add(int type){
+	public void addWrittenQuiz(){
 		
+		DBConnection.addWrittenQuiz(user, made);
+		made++;
+	}
+	/**
+	 * Adds 1 to the amount of quizzes taken.
+	 */
+	public void addTakenQuiz(){
+		
+		DBConnection.addTakenQuiz(user, taken);
+		taken++;
 	}
 
 	/**
-	 * Returns the percentage complete. 
+	 * Returns the percentage complete. Returns -1.0 if the type is not recognized.
 	 * @param type
 	 * @return percentage complete
 	 */
 	public double progress(int type){
-		return 0;
-		
+		double ret = 0;
+		switch (type){
+		case AMATEUR_AUTHOR:
+			ret = made / 1.0;
+			break;
+		case PROLIFIC_AUTHOR:
+			ret = made / 5.0;
+			break;
+		case PRODIGIOUS_AUTHOR:
+			ret = made / 10.0;
+			break;
+		case QUIZ_MACHINE:
+			ret = taken / 10.0;
+			break;
+		case I_AM_THE_GREATEST:
+			if (highscore) ret = 1;
+			break;
+		default:
+			return -1.0;
+		}
+		if (ret > 1) return 100.0;
+		return (ret * 100);
 	}
-	
+
 	/**
-	 * Lets you know if the achievement has been completed.
+	 * Lets you know if the achievement has been completed. Returns false if the type is not recognized.
 	 * @param type
 	 * @return
 	 */
 	public boolean achieved(int type){
-		return true;
-	}
-	
-	/**
-	 * Sets the achievement completion (must be done manually for high scores, etc).
-	 * @param type
-	 */
-	public void setAchieved(int type){
-		
-	}
-	/**
-	 * Sets the picture given a link.
-	 * @param type
-	 * @param link
-	 */
-	public void setPicture(int type, String link){
-		
+		switch (type){
+		case AMATEUR_AUTHOR:
+			return made == 1;
+		case PROLIFIC_AUTHOR:
+			return made == 5;
+		case PRODIGIOUS_AUTHOR:
+			return made == 10;
+		case QUIZ_MACHINE:
+			return taken == 10;
+		case I_AM_THE_GREATEST:
+			return highscore;
+		}
+		return false;
 	}
 	/**
-	 * Gets a link to the picture.
-	 * @param type
-	 * @return
+	 * Sets the achievement "I AM THE GREATEST" to true;
 	 */
-	public String getPicture(int type){
-		return null;
+	public void reachedHighScore(){
+		highscore = true;
+		DBConnection.reachedHighScore(user);
 	}
-	
-	
-	
-	
-	
+
+
+
+
 }

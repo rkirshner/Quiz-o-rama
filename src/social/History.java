@@ -1,6 +1,10 @@
 package social;
 
 public class History {
+	
+	private String url;
+	private int score;
+	private long timestamp;
 	/**
 	 * 
 	 * @param url
@@ -9,25 +13,31 @@ public class History {
 	public History(String url, int score){
 	
 	}
+	
+	public History(String url, int score, long timestamp){
+		this.url = url;
+		this.score = score;
+		this.timestamp = timestamp;
+	}
 	/**
 	 * Returns a link to the quiz.
 	 * @return
 	 */
 	public String getQuiz(){
-		return null;
+		return url;
 	}
 	/**
 	 * Returns the time in milliseconds the quiz was completed since the epoch.
 	 * @return
 	 */
 	public long getTimeStamp(){
-		return 1;
+		return timestamp;
 	}
 	/**
 	 * Returns the players score on the quiz.
 	 * @return
 	 */
 	public int getScore(){
-		return 1;
+		return score;
 	}
 }

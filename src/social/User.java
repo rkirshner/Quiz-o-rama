@@ -1,6 +1,6 @@
 package social;
 
-import com.sun.tools.javac.util.List;
+import java.util.List;
 
 public class User {
 
@@ -16,14 +16,15 @@ public class User {
 	 * @param admin
 	 */
 	public User(String name, String password, boolean admin){
-		
+		this.name = name;
+		this.admin = admin;
 	}
 	/**
 	 * Gets a list of the user's friends.
 	 * @return
 	 */
 	public List<String> getFriends(){
-		return null;
+		return DBConnection.getUserFriends(name);
 	}
 	/**
 	 * Decides of the password (Plain text) given is correct
@@ -38,7 +39,7 @@ public class User {
 	 * @return
 	 */
 	public Mailbox getMailbox(){
-		return null;
+		return new Mailbox(name);
 	}
 	
 	/**
@@ -46,16 +47,41 @@ public class User {
 	 * @return
 	 */
 	public Achievements getAchievements(){
-		return null;
+		
+		
+		return DBConnection.getAchievements(this);
 	}
 	/**
 	 * Gets a list of History objects in descending order by time.
 	 * @return
 	 */
 	public List<History> getHistory(){
-		return null;
+		return DBConnection.getUserHistory(name);
 	}
 	
+	/**
+	 * Adds a new history entry for the user, given the url to the quiz and their score.
+	 * @param url
+	 * @param score
+	 */
+	public void addToHistory(String url, int score){
+		DBConnection.addToHistory(this, url, score);
+	}
+	
+	/**
+	 * Returns true if user is an admin, false if not.
+	 * @return
+	 */
+	public boolean isAdmin(){
+		return admin;
+	}
+	/**
+	 * Gets users username.
+	 * @return
+	 */
+	public String getName(){
+		return name;
+	}
 	
 	
 	
