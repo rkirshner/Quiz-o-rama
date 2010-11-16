@@ -4,8 +4,10 @@ import junit.framework.TestCase;
 import java.util.*;
 
 public class Tester extends TestCase{
-	User usera;
+	User usera, userb;
 	protected void setUp() throws Exception {
+		usera = new User("test1", "test1", false);
+		userb = new User("test2", "test2", true);
 	}
 	 
 //	public void testDBGetUser() {
@@ -49,20 +51,43 @@ public class Tester extends TestCase{
 //		User a = new User("test1", "test1", false);
 //		a.addToHistory("newlink", 250);
 //	}
-	public void testAchievements(){
-		User a = new User("test1", "test1", false);
-		Achievements b = a.getAchievements();
-		for (int i = 0; i < 5; i++){
-			System.out.println(b.progress(i));
+//	public void testAchievements(){
+//		User a = new User("test1", "test1", false);
+//		Achievements b = a.getAchievements();
+//		for (int i = 0; i < 5; i++){
+//			System.out.println(b.progress(i));
+//		}
+//		b.addTakenQuiz();
+//		b.addWrittenQuiz();
+//		for (int i = 0; i < 5; i++){
+//			
+//			System.out.println(b.progress(i));
+//		}
+//	}
+	public void testMessage(){
+		Mailbox a = usera.getMailbox();
+		System.out.println("unread: " + a.unread());
+		List<FriendRequest> b = a.getSentFriendRequests();
+		for (int i = 0; i < b.size(); i ++){
+			System.out.println(b.get(i).getSender());
+			System.out.println(b.get(i).getRecipient());
+			System.out.println(b.get(i).getTimeStamp());
 		}
-		b.addTakenQuiz();
-		b.addWrittenQuiz();
-		for (int i = 0; i < 5; i++){
-			
-			System.out.println(b.progress(i));
+		System.out.println("--------------------");
+		b = a.getRecievedFriendRequests();
+		for (int i = 0; i < b.size(); i ++){
+			System.out.println(b.get(i).getSender());
+			System.out.println(b.get(i).getRecipient());
+			System.out.println(b.get(i).getTimeStamp());
+		}
+		System.out.println("--------------------");
+		b = a.getAllFriendRequests();
+		for (int i = 0; i < b.size(); i ++){
+			System.out.println(b.get(i).getSender());
+			System.out.println(b.get(i).getRecipient());
+			System.out.println(b.get(i).getTimeStamp());
 		}
 	}
-	
 	
 	
 	

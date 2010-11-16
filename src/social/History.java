@@ -6,14 +6,19 @@ public class History {
 	private int score;
 	private long timestamp;
 	/**
-	 * 
+	 * Should not be called by a client.
 	 * @param url
 	 * @param score
 	 */
 	public History(String url, int score){
 	
 	}
-	
+	/**
+	 * Should not be called by a client.
+	 * @param url
+	 * @param score
+	 * @param timestamp
+	 */
 	public History(String url, int score, long timestamp){
 		this.url = url;
 		this.score = score;

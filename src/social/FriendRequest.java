@@ -6,8 +6,8 @@ public class FriendRequest extends Message{
 	 * @param sender
 	 * @param recipient
 	 */
-	public FriendRequest(String sender, String recipient) {
-		super(sender, recipient);
+	public FriendRequest(String sender, String recipient, long time) {
+		super(sender, recipient, time);
 	}
 	
 	/**

@@ -6,8 +6,8 @@ public class Challenge extends Message{
 	 * @param sender
 	 * @param recipient
 	 */
-	public Challenge(String sender, String recipient) {
-		super(sender, recipient);
+	public Challenge(String sender, String recipient,long time) {
+		super(sender, recipient, time);
 		// TODO Auto-generated constructor stub
 	}
 	/**

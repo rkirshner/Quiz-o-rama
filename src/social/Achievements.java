@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Achievements {
 
-	int made;
-	int taken;
-	boolean highscore;
-	String user;
+	private int made;
+	private int taken;
+	private boolean highscore;
+	private String user;
 
 	public Achievements(String user, int made, int taken, boolean highscore){
 		this.made = made;
@@ -27,7 +27,6 @@ public class Achievements {
 	 * Adds 1 to the amount of quizzes created.
 	 */
 	public void addWrittenQuiz(){
-		
 		DBConnection.addWrittenQuiz(user, made);
 		made++;
 	}

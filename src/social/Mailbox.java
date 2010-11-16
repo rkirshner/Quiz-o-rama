@@ -1,46 +1,21 @@
 package social;
 
-import com.sun.tools.javac.util.List;
+import java.util.List;
 
 public class Mailbox {
-
+	String user;
 	
 	public Mailbox(String user){
-		
+		this.user = user;
 	}
 	/**
 	 * Returns the number unread.
 	 * @return
 	 */
 	public int unread(){
-		return 0;
+		return DBConnection.getNumUnreadMessages(user);
 	}
 	
-	
-	
-	
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public List<Message> getSentMessages(){
-		return null;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public List<Message> getRecievedMessages(){
-		return null;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public List<Message> getAllMessages(){
-		return null;
-	}
 	/**
 	 * 
 	 * @return
@@ -94,15 +69,14 @@ public class Mailbox {
 	 * @return
 	 */
 	public List<FriendRequest> getSentFriendRequests(){
-		return null;
-		
+		return DBConnection.getFriendRequests(user, DBConnection.SENT);
 	}
 	/**
 	 * 
 	 * @return
 	 */
 	public List<FriendRequest> getRecievedFriendRequests(){
-		return null;
+		return DBConnection.getFriendRequests(user, DBConnection.RECIEVED);
 		
 	}
 	/**
@@ -110,7 +84,6 @@ public class Mailbox {
 	 * @return
 	 */
 	public List<FriendRequest> getAllFriendRequests(){
-		return null;
-		
+		return DBConnection.getFriendRequests(user, DBConnection.BOTH);
 	}
 }

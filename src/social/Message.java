@@ -15,10 +15,10 @@ public class Message {
 	 * @param recipient
 	 * @param message
 	 */
-	public Message(String sender, String recipient){
+	public Message(String sender, String recipient, long timeStamp){
 		this.sender = sender;
 		this.recipient = recipient;
-		timeStamp = System.currentTimeMillis();
+		this.timeStamp = timeStamp;
 	}
 	/**
 	 * Sets the subject for the message.

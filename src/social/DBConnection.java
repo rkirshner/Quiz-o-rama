@@ -11,9 +11,16 @@ public class DBConnection {
 	private static String database = "c_cs108_rbk";
 	private static Connection con;
 
+	protected final static int BOTH = 0;
+	protected final static int SENT = 1;
+	protected final static int RECIEVED = 2;
 	
+	protected final static int ALL = 3;
+	protected final static int CHALLENGE = 4;
+	protected final static int NOTE = 5;
+	protected final static int FRIEND_REQUEST = 6;
 	
-	private static void initalizeConnection(){
+	private static void initializeConnection(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection("jdbc:mysql://" + server, account ,password);
@@ -24,15 +31,61 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 	}
-	public DBConnection(){
+	
+	protected static int getNumUnreadMessages(String user){
+		initializeConnection();
+		int ret = 0;
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			ResultSet rs = stmt.executeQuery("SELECT r FROM Mail WHERE recieved_user_id LIKE \"" + user +"\" AND r = 1;");
+			while(rs.next()){
+				ret++;
+			}
 		
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return ret;
+	}
+	
+	protected static List<FriendRequest> getFriendRequests(String user, int modifier){
+		initializeConnection();
+		List<FriendRequest> ret = new ArrayList<FriendRequest>();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			ResultSet rs = null;
+			switch (modifier){
+			case BOTH:
+				rs = stmt.executeQuery("SELECT * FROM Mail WHERE sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");
+				break;
+			case SENT:
+				rs = stmt.executeQuery("SELECT * FROM Mail WHERE sent_user_id LIKE \"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");
+				break;
+			case RECIEVED:
+				rs = stmt.executeQuery("SELECT * FROM Mail WHERE recieved_user_id LIKE \"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");	
+				break;
+			}
+			while (rs.next()){
+				FriendRequest next = new FriendRequest(rs.getString("sent_user_id"), rs.getString("recieved_user_id"), rs.getLong("timestamp"));
+				next.setRead(rs.getBoolean("r"));
+				next.setSubject(rs.getString("subject"));
+				ret.add(next);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ret;	
 	}
 	
 	
 	
 	
-	public static void addTakenQuiz(String user, int prev){
-		initalizeConnection();
+	
+	protected static void addTakenQuiz(String user, int prev){
+		initializeConnection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
@@ -42,8 +95,8 @@ public class DBConnection {
 		}
 	}
 	
-	public static void addWrittenQuiz(String user, int prev){
-		initalizeConnection();
+	protected static void addWrittenQuiz(String user, int prev){
+		initializeConnection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
@@ -53,8 +106,8 @@ public class DBConnection {
 		}
 	}
 	
-	public static void reachedHighScore(String user){
-		initalizeConnection();
+	protected static void reachedHighScore(String user){
+		initializeConnection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
@@ -64,8 +117,8 @@ public class DBConnection {
 		}
 	}
 	
-	public static Achievements getAchievements(User user){
-		initalizeConnection();
+	protected static Achievements getAchievements(User user){
+		initializeConnection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
@@ -80,8 +133,8 @@ public class DBConnection {
 		return null;
 	}
 
-	public static User getUser(String username, String password){
-		initalizeConnection();
+	protected static User getUser(String username, String password){
+		initializeConnection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
@@ -101,8 +154,8 @@ public class DBConnection {
 		return null;
 	}
 	
-	public static boolean addUser(String username, String password, boolean admin){
-		initalizeConnection();
+	protected static boolean addUser(String username, String password, boolean admin){
+		initializeConnection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
@@ -118,8 +171,8 @@ public class DBConnection {
 		return true;
 	}
 	
-	public static List<String> getUserFriends(String user){
-		initalizeConnection();
+	protected static List<String> getUserFriends(String user){
+		initializeConnection();
 		List<String> ret = new ArrayList<String>();
 		try {
 			Statement stmt = con.createStatement();
@@ -138,8 +191,8 @@ public class DBConnection {
 		return ret;		
 	}
 	
-	public static List<History> getUserHistory(String user){
-		initalizeConnection();
+	protected static List<History> getUserHistory(String user){
+		initializeConnection();
 		List<History> ret = new ArrayList<History>();
 		try {
 			Statement stmt = con.createStatement();
@@ -155,8 +208,8 @@ public class DBConnection {
 		return ret;
 	}
 
-	public static void addToHistory(User user, String url, int score){
-		initalizeConnection();
+	protected static void addToHistory(User user, String url, int score){
+		initializeConnection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
