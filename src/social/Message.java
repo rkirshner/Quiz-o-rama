@@ -5,7 +5,6 @@ public class Message {
 	private String sender;
 	private String recipient;
 
-	private String message;
 	private String subject;
 	private long timeStamp;
 	protected boolean read;
@@ -26,7 +25,8 @@ public class Message {
 	 * @param subject
 	 */
 	public void setSubject(String subject){
-		
+		this.subject = subject;
+		DBConnection.setSubject(this);
 	}
 	/**
 	 * Returns the sender.

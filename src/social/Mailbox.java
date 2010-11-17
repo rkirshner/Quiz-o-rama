@@ -93,7 +93,7 @@ public class Mailbox {
 	
 	
 	/**
-	 * Sends a message.
+	 * Sends a message. Does nothing if m is a FriendRequest that is still pending or if the users are already friends.
 	 * @param m
 	 */
 	public void sendMessage(Message m){

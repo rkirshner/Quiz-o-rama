@@ -11,7 +11,8 @@ public class History {
 	 * @param score
 	 */
 	public History(String url, int score){
-	
+		this.url = url;
+		this.score = score;
 	}
 	/**
 	 * Should not be called by a client.

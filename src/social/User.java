@@ -29,12 +29,23 @@ public class User {
 	public List<String> getFriends(){
 		return DBConnection.getUserFriends(name);
 	}
+	
+	
+	/**
+	 * Returns if the user is friends with the passed in user.
+	 * @param user
+	 * @return
+	 */
+	public boolean areFriends(User user){
+		return false;
+	}
 	/**
 	 * Decides of the password (Plain text) given is correct
 	 * @param password 
 	 * @return
 	 */
 	public boolean correctPassword(String password){
+		//TODO 
 		return true;
 	}
 	/**

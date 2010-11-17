@@ -13,12 +13,12 @@ public class Challenge extends Message{
 	 */
 	public Challenge(String sender, String recipient,long time) {
 		super(sender, recipient, time);
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * Sets the link to the quiz.
 	 */
 	public void setLink(String url){
+		//TODO 
 		link = url;
 	}
 	
@@ -26,6 +26,7 @@ public class Challenge extends Message{
 	 * Sets the high score.
 	 */
 	public void setHighScore(int hs){
+		//TODO 
 		highscore = hs;
 	}
 	/**
@@ -33,6 +34,7 @@ public class Challenge extends Message{
 	 * @return
 	 */
 	public int getHighScore(){
+		//TODO 
 		return highscore;
 		
 	}
@@ -41,6 +43,7 @@ public class Challenge extends Message{
 	 * @return
 	 */
 	public String getLink(){
+		//TODO 
 		return link;
 		
 	}

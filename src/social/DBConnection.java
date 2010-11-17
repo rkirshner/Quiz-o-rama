@@ -20,6 +20,9 @@ public class DBConnection {
 	protected final static int NOTE = 5;
 	protected final static int FRIEND_REQUEST = 6;
 	
+	protected final static int ACCEPT = 7;
+	protected final static int DECLINE = 8;
+	
 	private static void initializeConnection(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -31,6 +34,31 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 	}
+	
+	protected static void setSubject(Message m){
+		initializeConnection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			stmt.executeUpdate("UPDATE social_mail SET subject = \"" + m.getSubject() + "\" WHERE sent_user_id = \"" + m.getSender() +"\" AND recieved_user_id = \"" +m.getRecipient()+ "\";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected static void processFriendRequest(FriendRequest f, int response){
+		if (f.processed()) return;
+		initializeConnection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			if (response == ACCEPT) stmt.executeUpdate("INSERT INTO social_friendships VALUES(\""+f.getSender()+"\",\""+f.getRecipient()+"\");");
+			stmt.executeUpdate("DELETE FROM social_mail WHERE sent_user_id =\"" + f.getSender()+"\" AND recieved_user_id = \"" + f.getRecipient()+"\" AND type = \"friend_request\";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	protected static int getNumUnreadMessages(String user){
 		initializeConnection();
