@@ -64,8 +64,8 @@ public class Tester extends TestCase{
 //			System.out.println(b.progress(i));
 //		}
 //	}
-	public void testMessage(){
-		Mailbox a = usera.getMailbox();
+//	public void testMessage(){
+//		Mailbox a = usera.getMailbox();
 //		System.out.println("unread: " + a.unread());
 //		List<FriendRequest> b = a.getSentFriendRequests();
 //		for (int i = 0; i < b.size(); i ++){
@@ -87,13 +87,17 @@ public class Tester extends TestCase{
 //			System.out.println(b.get(i).getRecipient());
 //			System.out.println(b.get(i).getTimeStamp());
 //		}
+//
+//	}
 	
-		a.sendMessage(new Challenge("", "", 0));
-		a.sendMessage(new FriendRequest("", "", 0));
-		a.sendMessage(new Note("","",0));
+	public void testStuff(){
+		Mailbox a = usera.getMailbox();
+		Note n = new Note ("test1", "test2");
+		//n.setMessage("farts");
+		a.sendMessage(n);
+		n.setSubject("gross");
+		//a.sendMessage(n);
 	}
-	
-	
 	
 	
 	

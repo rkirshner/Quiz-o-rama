@@ -2,13 +2,20 @@ package social;
 
 public class FriendRequest extends Message{
 	private boolean processed;
+
 	/**
 	 * 
 	 * @param sender
 	 * @param recipient
+	 * @param time
 	 */
 	public FriendRequest(String sender, String recipient, long time) {
 		super(sender, recipient, time);
+		processed = false;
+	}
+	
+	public FriendRequest(String sender, String recipient){
+		super(sender, recipient, System.currentTimeMillis());
 		processed = false;
 	}
 	
@@ -31,6 +38,10 @@ public class FriendRequest extends Message{
 	
 	protected boolean processed(){
 		return processed;
+	}
+	
+	protected boolean readyToSend(){
+		return true;
 	}
 
 }

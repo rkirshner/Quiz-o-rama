@@ -15,13 +15,8 @@ public class DBConnection {
 	protected final static int SENT = 1;
 	protected final static int RECIEVED = 2;
 	
-	protected final static int ALL = 3;
-	protected final static int CHALLENGE = 4;
-	protected final static int NOTE = 5;
-	protected final static int FRIEND_REQUEST = 6;
-	
-	protected final static int ACCEPT = 7;
-	protected final static int DECLINE = 8;
+	protected final static int ACCEPT = 3;
+	protected final static int DECLINE = 4;
 	
 	private static void initializeConnection(){
 		try {
@@ -40,7 +35,7 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			stmt.executeUpdate("UPDATE social_mail SET subject = \"" + m.getSubject() + "\" WHERE sent_user_id = \"" + m.getSender() +"\" AND recieved_user_id = \"" +m.getRecipient()+ "\";");
+			stmt.executeUpdate("UPDATE social_mail SET subject = \"" + m.getSubject() + "\" WHERE sent_user_id = \"" + m.getSender() +"\" AND recieved_user_id = \"" +m.getRecipient()+ "\" AND timestamp = \""+ m.getTimeStamp()+"\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -53,8 +48,80 @@ public class DBConnection {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
 			if (response == ACCEPT) stmt.executeUpdate("INSERT INTO social_friendships VALUES(\""+f.getSender()+"\",\""+f.getRecipient()+"\");");
-			stmt.executeUpdate("DELETE FROM social_mail WHERE sent_user_id =\"" + f.getSender()+"\" AND recieved_user_id = \"" + f.getRecipient()+"\" AND type = \"friend_request\";");
+			System.out.println("DELETE FROM social_mail WHERE sent_user_id =\"" + f.getSender()+"\" OR sent_user_id = \""+f.getRecipient()+"\" AND recieved_user_id = \"" + f.getRecipient()+"\" OR sent_user_id = \""+f.getSender()+"\" AND type = \"friend_request\";");
+			stmt.executeUpdate("DELETE FROM social_mail WHERE (sent_user_id =\"" + f.getSender()+"\" OR sent_user_id = \""+f.getRecipient()+"\") AND (recieved_user_id = \"" + f.getRecipient()+"\" OR recieved_user_id = \""+f.getSender()+"\") AND type = \"friend_request\";");
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected static void sendNote(Note n)throws RuntimeException{
+		initializeConnection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			ResultSet rs = stmt.executeQuery("SELECT user_id FROM users WHERE user_id LIKE \"" + n.getRecipient() +"\" ;");
+			if (!rs.first()) throw new RuntimeException("Recipient does not exist.");
+			String q = "";
+			q += "INSERT INTO social_mail(sent_user_id, recieved_user_id, timestamp, r, type, note_message";
+			if (n.getSubject() != null) q+= ", subject";
+			q += ") VALUES(\"" + n.getSender() + "\",\""+n.getRecipient()+"\",\""+System.currentTimeMillis()+"\",\"0\",\"note\",\"" + n.getMessage();
+			if (n.getSubject() != null) q+= "\",\"" + n.getSubject() ;
+			q+= "\");";
+			
+			stmt.executeUpdate(q);
+		} catch (SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	protected static void sendFriendRequest(FriendRequest n)throws RuntimeException{
+		initializeConnection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			ResultSet rs = stmt.executeQuery("SELECT user_id FROM users WHERE user_id LIKE \"" + n.getRecipient() +"\" ;");
+			if (!rs.first()) throw new RuntimeException("Recipient does not exist.");
+			rs = stmt.executeQuery("SELECT user_a FROM social_friendships WHERE (user_a =\"" + n.getSender() + "\" AND user_b =\"" + n.getRecipient() + "\") OR (user_a = \"" + n.getRecipient() + "\" AND user_b =\"" + n.getSender() + "\");");
+			if (rs.first()) return;
+			
+			rs = stmt.executeQuery("SELECT sent_user_id FROM social_mail WHERE (sent_user_id =\"" + n.getSender()+"\" OR sent_user_id = \""+n.getRecipient()+"\") AND (recieved_user_id = \"" + n.getRecipient()+"\" OR recieved_user_id = \""+n.getSender()+"\") AND type = \"friend_request\";");
+			if(rs.first()) return;
+			
+			String q = "";
+			q += "INSERT INTO social_mail(sent_user_id, recieved_user_id, timestamp, r, type";
+			if (n.getSubject() != null) q+= ", subject";
+			q+=") VALUES(\"" + n.getSender() + "\",\""+n.getRecipient()+"\",\""+n.getTimeStamp()+"\",\"0\",\"friend_request";
+			if (n.getSubject() != null) q+= "\",\"" + n.getSubject() ;
+			q+= "\");";
+			
+			System.out.println(q);
+			
+			
+			stmt.executeUpdate(q);
+		} catch (SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	protected static void sendChallenge(Challenge c) throws RuntimeException{
+		initializeConnection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			ResultSet rs = stmt.executeQuery("SELECT user_id FROM users WHERE user_id LIKE \"" + c.getRecipient() +"\" ;");
+			if (!rs.first()) throw new RuntimeException("Recipient does not exist.");
+			
+			String q = "";
+			q += "INSERT INTO social_mail(sent_user_id, recieved_user_id, timestamp, r, type, challenge_link, challenge_high_score";
+			if (c.getSubject() != null) q += ",subject";
+			q+= ") VALUES(\"" + c.getSender() + "\",\""+c.getRecipient()+"\",\""+c.getTimeStamp()+"\",\"0\",\"challenge\",\""+c.getLink()+"\",\""+c.getHighScore();
+			if (c.getSubject() != null) q += "\", \"" + c.getSubject();
+			q+= "\");";
+			
+			
+			stmt.executeUpdate(q);
+		} catch (SQLException e){
 			e.printStackTrace();
 		}
 	}

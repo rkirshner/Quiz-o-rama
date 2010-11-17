@@ -13,7 +13,7 @@ public class UserFactory {
 	 * @param password
 	 * @return
 	 */
-	public User getUser(String username, String password){
+	public static User getUser(String username, String password){
 		return DBConnection.getUser(username, password);
 	}
 	/**
@@ -23,7 +23,7 @@ public class UserFactory {
 	 * @param admin
 	 * @return
 	 */
-	public User addUser(String username, String password, boolean admin){
+	public static User addUser(String username, String password, boolean admin){
 		if (DBConnection.addUser(username, password, admin)) return DBConnection.getUser(username, password);
 		return null;
 	}

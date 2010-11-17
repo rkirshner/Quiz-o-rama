@@ -1,6 +1,6 @@
 package social;
 
-public class Message {
+public abstract class Message {
 	
 	private String sender;
 	private String recipient;
@@ -71,6 +71,10 @@ public class Message {
 	 */
 	public void setRead(boolean read){
 		this.read = read;
+	}
+	
+	protected boolean readyToSend(){
+		return false;
 	}
 	
 	
