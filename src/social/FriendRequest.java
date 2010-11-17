@@ -13,7 +13,11 @@ public class FriendRequest extends Message{
 		super(sender, recipient, time);
 		processed = false;
 	}
-	
+	/**
+	 * 
+	 * @param sender
+	 * @param recipient
+	 */
 	public FriendRequest(String sender, String recipient){
 		super(sender, recipient, System.currentTimeMillis());
 		processed = false;
@@ -28,9 +32,9 @@ public class FriendRequest extends Message{
 		processed = true;
 	}
 	/**
-	 * Declines a friends request. Only usable by the recipient. Removes FriendRequest from database.Calling it after it or accept has already been called will have no effect.
+	 * Declines a friends request. Only usable by the recipient. Removes FriendRequest from database. Calling it after it or accept has already been called will have no effect.
 	 */
-	public void decline(boolean answer){
+	public void decline(){
 		read = true;
 		DBConnection.processFriendRequest(this, DBConnection.DECLINE);
 		processed = true;

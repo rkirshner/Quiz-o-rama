@@ -8,7 +8,11 @@ import java.util.List;
  */
 public class Mailbox {
 	String user;
-
+	
+	/**
+	 * 
+	 * @param user
+	 */
 	public Mailbox(String user){
 		this.user = user;
 	}

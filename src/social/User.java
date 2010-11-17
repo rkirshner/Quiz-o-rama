@@ -23,7 +23,7 @@ public class User {
 		this.admin = admin;
 	}
 	/**
-	 * Gets a list of the user's friends.
+	 * Gets a list of the user's friend's names.
 	 * @return
 	 */
 	public List<String> getFriends(){

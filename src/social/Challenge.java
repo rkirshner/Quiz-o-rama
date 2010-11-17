@@ -28,6 +28,7 @@ public class Challenge extends Message{
 	}
 	/**
 	 * Sets the link to the quiz.
+	 * @param url
 	 */
 	public void setLink(String url){
 		//TODO 
@@ -36,6 +37,7 @@ public class Challenge extends Message{
 	
 	/**
 	 * Sets the high score.
+	 * @param highscore
 	 */
 	public void setHighScore(int hs){
 		//TODO 

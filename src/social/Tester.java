@@ -89,16 +89,16 @@ public class Tester extends TestCase{
 //		}
 //
 //	}
-	
-	public void testStuff(){
-		Mailbox a = usera.getMailbox();
-		Note n = new Note ("test1", "test2");
-		//n.setMessage("farts");
-		a.sendMessage(n);
-		n.setSubject("gross");
-		//a.sendMessage(n);
-	}
-	
+//	
+//	public void testStuff(){
+//		Mailbox a = usera.getMailbox();
+//		Note n = new Note ("test1", "test2");
+//		//n.setMessage("farts");
+//		a.sendMessage(n);
+//		n.setSubject("gross");
+//		//a.sendMessage(n);
+//	}
+//	
 	
 	
 	

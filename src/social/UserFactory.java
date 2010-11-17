@@ -11,7 +11,7 @@ public class UserFactory {
 	 * Returns null if the username and password do not match.
 	 * @param username
 	 * @param password
-	 * @return
+	 * @return User
 	 */
 	public static User getUser(String username, String password){
 		return DBConnection.getUser(username, password);
@@ -21,7 +21,7 @@ public class UserFactory {
 	 * @param username
 	 * @param password
 	 * @param admin
-	 * @return
+	 * @return User
 	 */
 	public static User addUser(String username, String password, boolean admin){
 		if (DBConnection.addUser(username, password, admin)) return DBConnection.getUser(username, password);
