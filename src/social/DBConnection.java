@@ -48,7 +48,6 @@ public class DBConnection {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
 			if (response == ACCEPT) stmt.executeUpdate("INSERT INTO social_friendships VALUES(\""+f.getSender()+"\",\""+f.getRecipient()+"\");");
-			System.out.println("DELETE FROM social_mail WHERE sent_user_id =\"" + f.getSender()+"\" OR sent_user_id = \""+f.getRecipient()+"\" AND recieved_user_id = \"" + f.getRecipient()+"\" OR sent_user_id = \""+f.getSender()+"\" AND type = \"friend_request\";");
 			stmt.executeUpdate("DELETE FROM social_mail WHERE (sent_user_id =\"" + f.getSender()+"\" OR sent_user_id = \""+f.getRecipient()+"\") AND (recieved_user_id = \"" + f.getRecipient()+"\" OR recieved_user_id = \""+f.getSender()+"\") AND type = \"friend_request\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,7 +94,6 @@ public class DBConnection {
 			if (n.getSubject() != null) q+= "\",\"" + n.getSubject() ;
 			q+= "\");";
 			
-			System.out.println(q);
 			
 			
 			stmt.executeUpdate(q);
@@ -295,9 +293,6 @@ public class DBConnection {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE user_id LIKE \"" + username+ "\" AND password LIKE \"" + password + "\" ;");
 
 			if(rs.first()){
-				System.out.println(rs.getString("user_id"));
-				System.out.println(rs.getString("password"));
-				System.out.println(rs.getInt("admin"));
 				return new User(rs.getString("user_id"), rs.getString("password"), rs.getBoolean("admin"));
 			}
 			
