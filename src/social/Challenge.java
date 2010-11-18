@@ -31,7 +31,6 @@ public class Challenge extends Message{
 	 * @param url
 	 */
 	public void setLink(String url){
-		//TODO 
 		link = url;
 	}
 	
@@ -40,7 +39,6 @@ public class Challenge extends Message{
 	 * @param highscore
 	 */
 	public void setHighScore(int hs){
-		//TODO 
 		highscore = hs;
 	}
 	/**
@@ -48,7 +46,6 @@ public class Challenge extends Message{
 	 * @return
 	 */
 	public int getHighScore(){
-		//TODO 
 		return highscore;
 		
 	}
@@ -57,7 +54,6 @@ public class Challenge extends Message{
 	 * @return
 	 */
 	public String getLink(){
-		//TODO 
 		return link;
 		
 	}

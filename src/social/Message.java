@@ -70,6 +70,7 @@ public abstract class Message {
 	 * @param read
 	 */
 	public void setRead(boolean read){
+		DBConnection.markAsRead(this, read);
 		this.read = read;
 	}
 	

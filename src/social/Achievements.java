@@ -1,7 +1,5 @@
 package social;
 
-import java.util.List;
-
 public class Achievements {
 
 	private int made;
@@ -34,7 +32,6 @@ public class Achievements {
 	 * Adds 1 to the amount of quizzes taken.
 	 */
 	public void addTakenQuiz(){
-		
 		DBConnection.addTakenQuiz(user, taken);
 		taken++;
 	}

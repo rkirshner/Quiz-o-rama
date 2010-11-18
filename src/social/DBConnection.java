@@ -154,7 +154,7 @@ public class DBConnection {
 			ResultSet rs = null;
 			switch (modifier){
 			case BOTH:
-				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE (sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\") AND type = \"friend_request\" ORDER BY timestamp DESC;");
 				break;
 			case SENT:
 				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" AND type = \"friend_request\" ORDER BY timestamp DESC;");
@@ -184,7 +184,7 @@ public class DBConnection {
 			ResultSet rs = null;
 			switch (modifier){
 			case BOTH:
-				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE (sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\") AND type = \"note\" ORDER BY timestamp DESC;");
 				break;
 			case SENT:
 				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");
@@ -215,7 +215,7 @@ public class DBConnection {
 			ResultSet rs = null;
 			switch (modifier){
 			case BOTH:
-				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");
+				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE (sent_user_id LIKE \"" + user +"\" OR recieved_user_id LIKE\"" + user +"\") AND type = \"note\" ORDER BY timestamp DESC;");
 				break;
 			case SENT:
 				rs = stmt.executeQuery("SELECT * FROM social_mail WHERE sent_user_id LIKE \"" + user +"\" AND type = \"note\" ORDER BY timestamp DESC;");
@@ -370,6 +370,24 @@ public class DBConnection {
 			stmt.executeUpdate("INSERT INTO social_history VALUES (\"" + user.getName() + "\",\"" + System.currentTimeMillis() + "\",\"" + url + "\",\"" + score + "\")");
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected static void markAsRead(Message m, boolean r){
+		initializeConnection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeQuery("USE " + database);
+			String u = "UPDATE social_mail SET r = \"";
+			if (r){
+				u += "1";
+			} else {
+				u += "0";
+			}
+			u += "\" WHERE sent_user_id =\"" + m.getSender() + "\" AND recieved_user_id =\"" + m.getRecipient() + "\" AND timestamp =\"" + m.getTimeStamp() + "\";";
+			stmt.executeUpdate(u);
+		} catch (SQLException e){
 			e.printStackTrace();
 		}
 	}
