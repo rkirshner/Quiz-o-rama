@@ -123,8 +123,7 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 	}
-	
-	
+		
 	protected static int getNumUnreadMessages(String user){
 		initializeConnection();
 		int ret = 0;
@@ -290,10 +289,10 @@ public class DBConnection {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE user_id LIKE \"" + username+ "\" AND password LIKE \"" + password + "\" ;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE user_id LIKE \"" + username+ "\" AND password LIKE \"" + PasswordHandler.plainToHash(password) + "\" ;");
 
 			if(rs.first()){
-				return new User(rs.getString("user_id"), rs.getString("password"), rs.getBoolean("admin"));
+				return new User(rs.getString("user_id"), rs.getString("password"), rs.getBoolean("admin"), true);
 			}
 			
 		} catch (SQLException e) {
@@ -303,21 +302,21 @@ public class DBConnection {
 		return null;
 	}
 	
-	protected static boolean addUser(String username, String password, boolean admin){
+	protected static User addUser(String username, String password, boolean admin){
 		initializeConnection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + database);
 			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE user_id LIKE \"" + username+ "\";");
-			if (rs.first()) throw new SQLException();
+			if (rs.first()) return null;
 			int adminint = 0;
 			if(admin) adminint = 1;
-			stmt.executeUpdate("INSERT INTO Users VALUES(\"" + username +"\",\""+password+"\",\""+ adminint+"\")" );
+			stmt.executeUpdate("INSERT INTO users VALUES(\"" + username +"\",\""+PasswordHandler.plainToHash(password)+"\",\""+ adminint+"\")" );
+			return new User(username, password, admin);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
-		return true;
 	}
 	
 	protected static List<String> getUserFriends(String user){

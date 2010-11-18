@@ -24,8 +24,7 @@ public class UserFactory {
 	 * @return User
 	 */
 	public static User addUser(String username, String password, boolean admin){
-		if (DBConnection.addUser(username, password, admin)) return DBConnection.getUser(username, password);
-		return null;
+		return (DBConnection.addUser(username, password, admin));
 	}
 	
 	

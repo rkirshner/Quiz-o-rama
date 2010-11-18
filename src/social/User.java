@@ -18,9 +18,18 @@ public class User {
 	 * @param password
 	 * @param admin
 	 */
-	public User(String name, String password, boolean admin){
+	protected User(String name, String password, boolean admin){
 		this.name = name;
+		this.password = PasswordHandler.plainToHash(password);
 		this.admin = admin;
+	}
+	
+	protected User(String name, String password, boolean admin, boolean db){
+		if(db){
+			this.name = name;
+			this.password = password;
+			this.admin = admin;
+		}
 	}
 	/**
 	 * Gets a list of the user's friend's names.
@@ -45,8 +54,7 @@ public class User {
 	 * @return
 	 */
 	public boolean correctPassword(String password){
-		//TODO 
-		return true;
+		return PasswordHandler.passwordsSame(password, this.password);
 	}
 	/**
 	 * Returns the associated Mailbox object.

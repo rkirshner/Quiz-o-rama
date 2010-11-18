@@ -91,19 +91,29 @@ public class Tester extends TestCase{
 //	}
 //	
 	public void testStuff(){
-		Mailbox a = usera.getMailbox();
-		List<Note> b = a.getAllNotes();
-		for (int i = 0; i < b.size(); i++){
-			System.out.println(b.get(i).getTimeStamp());
-			b.get(i).setRead(true);
-		}
+//		Mailbox a = usera.getMailbox();
+//		List<Note> b = a.getAllNotes();
+//		for (int i = 0; i < b.size(); i++){
+//			System.out.println(b.get(i).getTimeStamp());
+//			b.get(i).setRead(true);
+//		}
 		
+		//System.out.println(PasswordHandler.plainToHash("hello"));
 		
 		//Note n = new Note ("test1", "test2", 1290036977);
 		//n.setMessage("hey mister");
 		//a.sendMessage(n);
 		//n.setSubject("gross");
 		//a.sendMessage(n);
+		
+		
+		User c = UserFactory.addUser("test10", "test10", true);
+		if (c.correctPassword("test11")) System.out.println("bad");
+		if (c.correctPassword("test10")) System.out.println("good");
+		c = UserFactory.getUser("test10", "test10");
+		if (c.correctPassword("test11")) System.out.println("bad");
+		if (c.correctPassword("test10")) System.out.println("good");
+		
 	}
 	
 	
